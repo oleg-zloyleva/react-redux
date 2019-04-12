@@ -51,7 +51,7 @@ class App extends Component {
 }
 
 export default connect(
-    state => ({tasks: state}),
+    state => ({tasks: state.tasksReducer}),
     dispatch => ({
       onAddTask: (title) => {dispatch({type:"ADD_TASK",payload:title})}
     })

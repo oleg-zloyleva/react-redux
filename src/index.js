@@ -6,20 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
 import { createStore } from "redux";
-
-
-
-const reducer = (state=[{title: "First task"}], action) => {
-    console.log(action);
-
-    if(action.type === "ADD_TASK"){
-        return [
-            ...state,
-            {title: action.payload}
-        ]
-    }
-    return state;
-};
+import reducer from './reducers'
 
 const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
