@@ -22,20 +22,35 @@ class App extends Component {
       <div className="App">
 
         <form action="" onSubmit={this.submitAddTaskHandler}>
+          <h2>Add task</h2>
           <input type="text" ref={this.taskText}/>
           <button>Add</button>
         </form>
 
+        <form action="" onSubmit={this.submitSearchTaskHandler.bind(this)}>
+          <h2>Search task</h2>
+          <input type="text" ref={(input) => this.searchText = input}/>
+          <button>Search</button>
+        </form>
+
         <ul>
           {
-            tasks.map(el => (
-                <li key={el.title}>{ el.title }</li>
+            tasks.map((el,i) => (
+                <li key={i}>{ el.title }</li>
             ))
           }
         </ul>
 
       </div>
     );
+  }
+
+  submitSearchTaskHandler(e){
+    e.preventDefault();
+    console.log("submitSearchTaskHandler", this.searchText.value);
+
+    const {onSearchTask} = this.props;
+    onSearchTask(this.searchText.value);
   }
 
   submitAddTaskHandler(e){
@@ -51,9 +66,10 @@ class App extends Component {
 }
 
 export default connect(
-    state => ({tasks: state.tasksReducer}),
+    state => ({tasks: state.tasksReducer.filter(el => el.title.includes(state.searchTask))}),
     dispatch => ({
-      onAddTask: (title) => {dispatch({type:"ADD_TASK",payload:title})}
+      onAddTask: (title) => {dispatch({type:"ADD_TASK",payload:title})},
+      onSearchTask: (search) => {dispatch({type:"SEARCH_TASK",payload:search})},
     })
 )(App);
 
