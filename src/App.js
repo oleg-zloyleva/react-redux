@@ -41,6 +41,10 @@ class App extends Component {
           }
         </ul>
 
+          <div>
+              <button onClick={this.props.onGetTasks}>Get</button>
+          </div>
+
       </div>
     );
   }
@@ -68,8 +72,19 @@ class App extends Component {
 export default connect(
     state => ({tasks: state.tasksReducer.filter(el => el.title.includes(state.searchTask))}),
     dispatch => ({
-      onAddTask: (title) => {dispatch({type:"ADD_TASK",payload:title})},
-      onSearchTask: (search) => {dispatch({type:"SEARCH_TASK",payload:search})},
+        onAddTask: (title) => {dispatch({type:"ADD_TASK",payload:title})},
+        onSearchTask: (search) => {dispatch({type:"SEARCH_TASK",payload:search})},
+        onGetTasks: () => {
+            const asyncGetTasks = () =>{
+                return dispatch => {
+                    setTimeout(() => {
+                        console.log("Get tasks");
+                        dispatch({type: "ASYNC_GET_TASKS"})
+                    }, 1000);
+                }
+            };
+            dispatch(asyncGetTasks());
+        }
     })
 )(App);
 
